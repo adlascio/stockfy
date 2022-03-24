@@ -9,7 +9,6 @@ export function useAuth(){
 }
 
 export function AuthProvider({children}) {
-    // const currentUser = useSelector(selectUser);
     const [currentUser, setCurrentUser] = useState();
     const [loading, setLoading] = useState(true);
 
@@ -36,6 +35,7 @@ export function AuthProvider({children}) {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, user => {
             // dispatch(setActiveUser(user))
+            console.log(user)
             setCurrentUser(user);
             setLoading(false)
         })

@@ -34,6 +34,34 @@
   margin-top: 1rem;
 }
 
+.slices__options {
+  display: flex;
+  justify-content: space-evenly;
+}
+.slices__option {
+  text-align: center;
+  cursor: pointer;
+}
+
+.slices__row {
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.target {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.targetHandler {
+  display: flex;
+  flex-direction: column;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-float infinite 3s ease-in-out;

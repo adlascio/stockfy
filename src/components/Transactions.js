@@ -21,6 +21,7 @@ export default function Transactions() {
     e.preventDefault();
     setTransactions({...transactions, isLoading:true})
     const today = new Date();
+    const selectedDate = new Date(transactionDateRef.current.value);
     if(stockCodeRef.current.value === "") {
       setError("Error: Invalid Stock / ETF code")
       setTransactions({...transactions, isLoading:false})
@@ -36,7 +37,7 @@ export default function Transactions() {
       setTransactions({...transactions, isLoading:false})
       return
     }
-    if(transactionDateRef.current.value === "") {
+    if(selectedDate > today) {
       setError("Error: Invalid transaction date")
       setTransactions({...transactions, isLoading:false})
       return
@@ -83,7 +84,7 @@ export default function Transactions() {
   }, [])
 
   return (
-    <Container>
+    <div>
       <h4 className='text-center mb-4'>Add Transactions</h4>
       <Card className='mb-4'>
         <Card.Body>
@@ -142,6 +143,6 @@ export default function Transactions() {
               ))}
             </tbody>
         </Table>    
-    </Container>
+    </div>
   )
 }

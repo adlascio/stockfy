@@ -29,7 +29,7 @@ export default function ForgotPassword() {
         
     }
   return (
-    <Container className='signup__container'>
+    <div className='signup__container'>
         <div className='signup__content'>
             <Card >
                 <Card.Body >
@@ -52,6 +52,6 @@ export default function ForgotPassword() {
                 Need an account? <Link to="/signup">Sign up</Link>
             </div>
         </div> 
-    </Container>
+    </div>
   )
 }

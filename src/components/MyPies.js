@@ -77,7 +77,7 @@ export default function MyPies() {
     
   }
   return (
-    <Container>
+    <div>
       <h3 className='text-center mb-4'>My Pies</h3>
       <Card>
         <Card.Body>
@@ -156,6 +156,6 @@ export default function MyPies() {
           <Button className='mt-4' variant='success' type='submit' onClick={e => createPie(e)}>Create new Pie</Button>
         </Card.Body>
       </Card>  
-    </Container>
+    </div>
   )
 }

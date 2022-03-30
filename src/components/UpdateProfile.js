@@ -35,7 +35,7 @@ export default function Signup() {
         
     }
   return (
-    <Container className='signup__container'>
+    <div className='signup__container'>
         <div className='signup__content'>
             <Card >
                 <Card.Body >
@@ -62,6 +62,6 @@ export default function Signup() {
                 <Link to="/">Cancel</Link>
             </div>
         </div> 
-    </Container>
+    </div>
   )
 }

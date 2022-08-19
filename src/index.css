@@ -220,6 +220,7 @@ aside .close {
   display: flex;
   justify-content: space-around;
   margin-top: 3rem;
+  gap:2rem
 }
 
 .insights > div {

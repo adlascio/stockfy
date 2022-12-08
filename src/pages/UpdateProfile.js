@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Button, Card, Form, Container, Alert } from "react-bootstrap";
+import { Button, Card, Form, Alert } from "react-bootstrap";
 import { useAuth } from "../contexts/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -13,7 +13,6 @@ export default function Signup() {
   const navigate = useNavigate();
 
   async function handleSubmit(e) {
-    console.log("submiting");
     e.preventDefault();
     if (passwordRef.current.value !== passwordConfirmationRef.current.value) {
       return setError("Passwords do not match.");

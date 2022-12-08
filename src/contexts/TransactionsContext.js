@@ -42,7 +42,6 @@ export function TransactionsProvider({ children }) {
       console.log("response", response);
       setTransactions({
         list: [...transactions.list, { ...transaction, id: response.id }],
-        isLoading: false,
       });
     } catch (e) {
       console.log("error at adding new transaction", e);

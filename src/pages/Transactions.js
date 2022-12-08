@@ -11,6 +11,8 @@ import {
 import { useAuth } from "../contexts/AuthContext";
 import { useTransactions } from "../contexts/TransactionsContext";
 import axios from "axios";
+import TransactionRow from "../components/TransactionRow";
+import StockAutocomplete from "../components/StockAutocomplete";
 
 export default function Transactions() {
   const currencyRef = useRef();
@@ -24,8 +26,7 @@ export default function Transactions() {
   const [stockList, setStockList] = useState([]);
   const [loading, setLoading] = useState(false);
   const user = useAuth();
-  const { transactions, deleteTransaction, saveTransaction } =
-    useTransactions();
+  const { transactions, saveTransaction } = useTransactions();
   const createTransaction = async (e) => {
     e.preventDefault();
     setError("");
@@ -88,33 +89,34 @@ export default function Transactions() {
           `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${stockInput}&apikey=${process.env.REACT_APP_ALPHA_VANTAGE_API_KEY}`
         )
         .then((res) => {
-          if (res.data.bestMatches.length === 0) {
-            setStockList([
-              <ListGroupItem>
-                <span>No results found</span>
-              </ListGroupItem>,
-            ]);
-          } else {
-            const parseStockList = res.data.bestMatches.map((stock) => (
-              <ListGroupItem
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  gap: "2rem",
-                }}
-                onClick={() =>
-                  handleClickStock(stock["1. symbol"], stock["8. currency"])
-                }
-                key={stock["1. symbol"]}
-              >
-                <span>{stock["1. symbol"]}</span>
-                <span style={{ color: "gray", fontSize: ".8rem" }}>
-                  {stock["2. name"]}
-                </span>
-              </ListGroupItem>
-            ));
-            setStockList(parseStockList);
-          }
+          setStockList(res.data.bestMatches);
+          // if (res.data.bestMatches.length === 0) {
+          //   setStockList([
+          //     <ListGroupItem>
+          //       <span>No results found</span>
+          //     </ListGroupItem>,
+          //   ]);
+          // } else {
+          //   const parseStockList = res.data.bestMatches.map((stock) => (
+          //     <ListGroupItem
+          //       style={{
+          //         display: "flex",
+          //         justifyContent: "space-between",
+          //         gap: "2rem",
+          //       }}
+          //       onClick={() =>
+          //         handleClickStock(stock["1. symbol"], stock["8. currency"])
+          //       }
+          //       key={stock["1. symbol"]}
+          //     >
+          //       <span>{stock["1. symbol"]}</span>
+          //       <span style={{ color: "gray", fontSize: ".8rem" }}>
+          //         {stock["2. name"]}
+          //       </span>
+          //     </ListGroupItem>
+          //   ));
+          //   setStockList(parseStockList);
+          // }
         })
         .catch((e) => console.log("error at search input", e));
     }, 1000);
@@ -143,7 +145,11 @@ export default function Transactions() {
                 list="stockInput"
                 type="text"
                 value={stockInput}
-                onChange={(e) => setStockInput(e.target.value)}
+                onChange={(e) => {
+                  setStockInput(e.target.value);
+                  setStockSelected("");
+                  currencyRef.current.value = "";
+                }}
                 onBlur={() => {
                   blurTimer = setTimeout(function () {
                     setStockList([]);
@@ -155,7 +161,13 @@ export default function Transactions() {
                 id="stockInput"
                 style={{ position: "absolute", width: "90%" }}
               >
-                {stockList}
+                {stockInput &&
+                  stockInput.toLowerCase() !== stockSelected.toLowerCase() && (
+                    <StockAutocomplete
+                      stockList={stockList}
+                      handleOnClick={handleClickStock}
+                    />
+                  )}
               </ListGroup>
             </Form.Group>
             <Form.Group className="signup__form-group" id="email">
@@ -233,21 +245,11 @@ export default function Transactions() {
         </thead>
         <tbody>
           {transactions.list.map((transaction, index) => (
-            <tr key={index} className="slices__row">
-              <td>{index + 1}</td>
-              <td>{transaction.stock_code}</td>
-              <td>{transaction.quantity}</td>
-              <td>{transaction.price}</td>
-              <td>{transaction.transaction_date}</td>
-              <td>{transaction.action}</td>
-              <td>
-                {" "}
-                <i
-                  className="uil uil-trash-alt"
-                  onClick={() => deleteTransaction(transaction.id)}
-                ></i>
-              </td>
-            </tr>
+            <TransactionRow
+              key={index}
+              index={index}
+              transaction={transaction}
+            />
           ))}
         </tbody>
       </Table>
